@@ -1,0 +1,19 @@
+{
+  "name": "salt-wiki-editor",
+  "version": "1.0.0",
+  "description": "MediaWiki helper script",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "esbuild": "^0.14.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild src/index.ts --bundle --outdir=dist --legal-comments=inline",
+    "watch": "esbuild src/index.ts --bundle --outdir=dist --legal-comments=inline --watch"
+  },
+  "keywords": [
+    "wiki"
+  ],
+  "author": "salt-lovely",
+  "license": "MulanPSL-2.0"
+}

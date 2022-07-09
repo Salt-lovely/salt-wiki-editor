@@ -2,7 +2,7 @@
  * @Author: Salt
  * @Date: 2022-07-09 13:51:11
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-09 15:32:45
+ * @LastEditTime: 2022-07-09 20:40:47
  * @Description: 这个文件的功能
  * @FilePath: \salt-wiki-editor\src\utils\utils.ts
  */
@@ -25,10 +25,10 @@ export function sleep(time?: number): Promise<void> {
 export function extend<T extends object, K extends Partial<T>>(
   obj: T,
   ext: K,
-  fouce = false
+  force = false
 ): T {
   for (const key in ext) {
-    if (fouce || !(key in obj)) {
+    if (force || !(key in obj)) {
       Object.defineProperty(obj, key, {
         value: ext[key],
         enumerable: false,

@@ -2,7 +2,7 @@
  * @Author: Salt
  * @Date: 2022-07-09 15:17:48
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-09 15:18:07
+ * @LastEditTime: 2022-07-09 23:07:49
  * @Description: 这个文件的功能
  * @FilePath: \salt-wiki-editor\src\constant\note.ts
  */
@@ -11,30 +11,27 @@ export const helpNote = `
     Ctrl+A 全选 Ctrl+C 复制 Ctrl+V 粘贴
     如果是油猴脚本，则需要设置只在使用了MediaWiki的网站启用
 使用如下代码实例化：
-    如果是油猴脚本同时没报错的话，那就已经实例化了一个 we 
-    // let we = new SaltWikiEditHelper()
+    如果是油猴脚本同时没报错的话，那就已经实例化了一个 we
+    // const we = new SaltWikiEditHelper()
 常用方法：
     we.wikiReplace(pages, before, after, timeInterval, debug)
         pages 一个长字符串，页面名集合，用特殊标记（; ）（一个半角分号+一个空格）隔开，默认为空
         before 被替换的内容，可以用正则表达式，默认为添加到行尾
         after 要替换的内容，默认为空
         timeInterval 每次替换的时间间隔，单位毫秒，推荐 200-300，超过15个 500，超过35个 750，超过50个 1000，超过100个 1500，默认为 500
-        debug 是否进入debug模式，默认为是
-    we.wikiAppend(pages, content, timeInterval, debug)
+    we.wikiAppend(pages, content, timeInterval)
         pages 一个长字符串，页面名集合，用特殊标记（; ）（一个半角分号+一个空格）隔开，默认为空
         content 要添加到页尾的内容
-        timeInterval 替换的时间间隔，单位毫秒，推荐 200-300，超过15个时建议 500，超过35个时建议 750，超过50个时建议 1000，超过100个时建议 1500，默认为 500
-        debug 是否进入debug模式，默认为是
-    we.wikiPrepend(pages, content, timeInterval, debug)
+        timeInterval 替换的时间间隔，单位毫秒，推荐值同上
+    we.wikiPrepend(pages, content, timeInterval)
         pages 一个长字符串，页面名集合，用特殊标记（; ）（一个半角分号+一个空格）隔开，默认为空
         content 要添加到页首的内容
-        timeInterval 替换的时间间隔，单位毫秒，推荐 200-300，超过15个时建议 500，超过35个时建议 750，超过50个时建议 1000，超过100个时建议 1500，默认为 500
-        debug 是否进入debug模式，默认为是
+        timeInterval 替换的时间间隔，单位毫秒，推荐值同上
     we.pageReplace(before, after)
         before 被替换的内容，可以用正则表达式，默认为添加到行尾
         after 要替换的内容，默认为空
     we.pageReplaceAll(content)
-        content 将页面整个替换
+        content 将页面整个替换为这个内容
     we.pageAppend(content)
         content 要添加到页尾的内容
     we.pagePrepend(content)
@@ -61,5 +58,5 @@ export const helpNote = `
         搜索Gadget名字空间
     we.me()
         输出自己的用户名、UID、用户组
-    we.note()
+    we.help()
         详细教程`

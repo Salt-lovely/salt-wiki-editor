@@ -2,7 +2,7 @@
  * @Author: Salt
  * @Date: 2022-07-09 15:17:48
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-09 23:07:49
+ * @LastEditTime: 2022-07-10 14:44:41
  * @Description: 这个文件的功能
  * @FilePath: \salt-wiki-editor\src\constant\note.ts
  */
@@ -14,7 +14,7 @@ export const helpNote = `
     如果是油猴脚本同时没报错的话，那就已经实例化了一个 we
     // const we = new SaltWikiEditHelper()
 常用方法：
-    we.wikiReplace(pages, before, after, timeInterval, debug)
+    we.wikiReplace(pages, before, after, timeInterval)
         pages 一个长字符串，页面名集合，用特殊标记（; ）（一个半角分号+一个空格）隔开，默认为空
         before 被替换的内容，可以用正则表达式，默认为添加到行尾
         after 要替换的内容，默认为空
@@ -60,3 +60,5 @@ export const helpNote = `
         输出自己的用户名、UID、用户组
     we.help()
         详细教程`
+
+export const prefix = '[salt-wiki-editor]'

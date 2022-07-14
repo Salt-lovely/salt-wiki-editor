@@ -2,8 +2,8 @@
  * @Author: Salt
  * @Date: 2022-07-09 13:46:28
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-09 23:41:24
- * @Description: 这个文件的功能
+ * @LastEditTime: 2022-07-10 00:22:56
+ * @Description: 入口文件
  * @FilePath: \salt-wiki-editor\src\index.ts
  */
 import SaltOriginalClass from './class/SaltOriginalClass'

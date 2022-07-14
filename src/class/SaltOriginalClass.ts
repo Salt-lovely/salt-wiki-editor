@@ -2,14 +2,17 @@
  * @Author: Salt
  * @Date: 2022-07-09 15:13:33
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-09 23:12:37
- * @Description: 这个文件的功能
+ * @LastEditTime: 2022-07-10 19:42:18
+ * @Description: 实现基础功能的类
  * @FilePath: \salt-wiki-editor\src\class\SaltOriginalClass.ts
  */
-import { assert, sleep } from 'Utils/utils'
+import { saltConsole, assert, sleep } from 'Utils/index'
 
-const { log } = console
+const { log } = saltConsole
 
+/**
+ * 实现了基础功能，同时会自动检测mw.Api上的方法是否完整
+ */
 export default class SaltOriginalClass {
   ver: string
   note: string
@@ -21,6 +24,8 @@ export default class SaltOriginalClass {
     this.ver = ver || ''
     this.note = note || ''
     this.getMwApi()
+    // 检查mw.Api原型的方法
+    this.addPlugin()
   }
   /** 获取版本信息 */
   version() {
@@ -50,7 +55,7 @@ export default class SaltOriginalClass {
   /** 等待mw加载完毕 */
   async waitMw() {
     let safe = 0
-    while (!mw) {
+    while (!window.mw) {
       await sleep(500)
       assert(safe++ < 30, '未检测到 mw ！')
     }
@@ -150,10 +155,20 @@ export default class SaltOriginalClass {
     // mwApi 属性是mw.Api的实例，异步取得
     if (!this.pageNameCheck(page) || !this.mwApi) return
     await this.mwApi.newSection(page, header, text, {
-      summary: '添加新章节“' + header + '”',
+      summary: `添加新章节“${header}”`,
       minor: true,
     })
-    log('新章节' + header + '已保存: ' + page)
+    log(`新章节“${header}”已保存到“${page}”`)
+  }
+
+  /** 创建新页面 */
+  async newPage(props: newPageProps) {
+    const { content, pageName, sum } = props
+    const page: string = pageName || mw.config.get('wgPageName')
+    // mwApi 属性是mw.Api的实例，异步取得
+    if (!this.pageNameCheck(page) || !this.mwApi) return
+    await this.mwApi.create(page, { summary: sum }, content)
+    log(`新页面“${page}”已保存`)
   }
 
   /**
@@ -274,5 +289,127 @@ export default class SaltOriginalClass {
       return false
     }
     return true
+  }
+
+  /** addPlugin: 给mw.Api的原型添加方法——垫片代码来自官方文档 */
+  async addPlugin() {
+    await this.waitMwApi() // 等待mw和mw.Api加载完毕
+    const mwApiInst = new mw.Api()
+    if (typeof mwApiInst.postWithEditToken !== 'function') {
+      log('mw.Api原型没有postWithEditToken方法，自动加载...')
+      mw.Api.prototype.postWithEditToken = function (p: any, a: any): any {
+        return this.postWithToken('csrf', p, a)
+      }
+    }
+    if (typeof mwApiInst.getEditToken !== 'function') {
+      log('mw.Api原型没有getEditToken方法，自动加载...')
+      mw.Api.prototype.getEditToken = function (): any {
+        return this.getToken('csrf')
+      }
+    }
+    if (typeof mwApiInst.create !== 'function') {
+      log('mw.Api原型没有create方法，自动加载...')
+      mw.Api.prototype.create = function (
+        title: string,
+        params: any,
+        content: any
+      ): any {
+        return this.postWithEditToken(
+          $.extend(
+            this.assertCurrentUser({
+              action: 'edit',
+              title: String(title),
+              text: content,
+              formatversion: '2',
+              createonly: true,
+            }),
+            params
+          )
+        ).then(function (data: any) {
+          return data.edit
+        })
+      }
+    }
+    if (typeof mwApiInst.edit !== 'function') {
+      log('mw.Api原型没有edit方法，自动加载...')
+      mw.Api.prototype.edit = function (title: string, transform: any): any {
+        var basetimestamp: any,
+          curtimestamp: any,
+          api = this
+        title = String(title)
+        return api
+          .get({
+            action: 'query',
+            prop: 'revisions',
+            rvprop: ['content', 'timestamp'],
+            titles: [title],
+            formatversion: '2',
+            curtimestamp: true,
+          })
+          .then(function (data: any) {
+            var page, revision
+            if (!data.query || !data.query.pages) {
+              return $.Deferred().reject('unknown')
+            }
+            page = data.query.pages[0]
+            if (!page || page.invalid) {
+              return $.Deferred().reject('invalidtitle')
+            }
+            if (page.missing) {
+              return $.Deferred().reject('nocreate-missing')
+            }
+            revision = page.revisions[0]
+            basetimestamp = revision.timestamp
+            curtimestamp = data.curtimestamp
+            return transform({
+              timestamp: revision.timestamp,
+              content: revision.content,
+            })
+          })
+          .then(function (params: any) {
+            var editParams =
+              typeof params === 'object' ? params : { text: String(params) }
+            return api.postWithEditToken(
+              $.extend(
+                {
+                  action: 'edit',
+                  title: title,
+                  formatversion: '2',
+                  assert: mw.config.get('wgUserName') ? 'user' : undefined,
+                  basetimestamp: basetimestamp,
+                  starttimestamp: curtimestamp,
+                  nocreate: true,
+                },
+                editParams
+              )
+            )
+          })
+          .then(function (data: any) {
+            return data.edit
+          })
+      }
+    }
+    if (typeof mwApiInst.newSection !== 'function') {
+      log('mw.Api原型没有newSection方法，自动加载...')
+      mw.Api.prototype.newSection = function (
+        title: string,
+        header: any,
+        message: any,
+        additionalParams: any
+      ): any {
+        return this.postWithEditToken(
+          $.extend(
+            {
+              action: 'edit',
+              section: 'new',
+              title: String(title),
+              summary: header,
+              text: message,
+            },
+            additionalParams
+          )
+        )
+      }
+    }
   }
 }

@@ -2,7 +2,7 @@
  * @Author: Salt
  * @Date: 2022-07-09 13:51:11
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-09 20:40:47
+ * @LastEditTime: 2022-07-10 12:06:34
  * @Description: 这个文件的功能
  * @FilePath: \salt-wiki-editor\src\utils\utils.ts
  */
@@ -36,4 +36,14 @@ export function extend<T extends object, K extends Partial<T>>(
     }
   }
   return obj
+}
+/** 返回一个输出时带prefix的类console方法集 */
+export function useConsole(...prefix: any[]) {
+  const log = (...data: any[]) => console.log(...prefix, ...data)
+  const error = (...data: any[]) => console.error(...prefix, ...data)
+  const warn = (...data: any[]) => console.warn(...prefix, ...data)
+  const debug = (...data: any[]) => console.debug(...prefix, ...data)
+  const info = (...data: any[]) => console.info(...prefix, ...data)
+  const clear = () => console.clear()
+  return { log, error, warn, debug, info, clear }
 }

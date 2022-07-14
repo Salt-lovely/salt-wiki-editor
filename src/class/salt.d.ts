@@ -1,3 +1,11 @@
+/*
+ * @Author: Salt
+ * @Date: 2022-07-09 16:09:27
+ * @LastEditors: Salt
+ * @LastEditTime: 2022-07-10 19:02:53
+ * @Description: 这个文件的功能
+ * @FilePath: \salt-wiki-editor\src\class\salt.d.ts
+ */
 interface defaultEditConfig {
   /** 被替换的内容，可以用正则表达式 */
   before: string | RegExp
@@ -21,6 +29,11 @@ interface wikiEditProps extends defaultEditConfig, timeInterval {
   pages: string
   /** 是否在上一条结束后再提交下一个编辑 */
   sync?: boolean
+}
+interface newPageProps {
+  content: string
+  sum?: string
+  pageName?: string
 }
 /** wikiSearchAndReplace 批量替换页面内容方法的参数 */
 interface wikiSearchAndReplaceProps extends defaultEditConfig, timeInterval {

@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild src/index.ts --bundle --outdir=dist --legal-comments=inline",
-    "watch": "esbuild src/index.ts --bundle --outdir=dist --legal-comments=inline --watch"
+    "build": "esbuild src/index.ts --bundle --outdir=dist --legal-comments=inline --charset=utf8",
+    "watch": "esbuild src/index.ts --bundle --outdir=dist --legal-comments=inline --watch --charset=utf8"
   },
   "keywords": [
     "wiki"

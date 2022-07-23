@@ -2,7 +2,7 @@
  * @Author: Salt
  * @Date: 2022-07-09 16:09:27
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-10 19:02:53
+ * @LastEditTime: 2022-07-24 00:01:29
  * @Description: 这个文件的功能
  * @FilePath: \salt-wiki-editor\src\class\salt.d.ts
  */
@@ -26,7 +26,7 @@ interface pageEditProps extends defaultEditConfig {
 /** wikiEdit 批量替换页面内容方法的参数 */
 interface wikiEditProps extends defaultEditConfig, timeInterval {
   /** 页面名集合，用特殊标记（; ）（一个半角分号+一个空格）隔开 */
-  pages: string
+  pages: string | string[]
   /** 是否在上一条结束后再提交下一个编辑 */
   sync?: boolean
 }

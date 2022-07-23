@@ -2,7 +2,7 @@
  * @Author: Salt
  * @Date: 2022-07-09 15:13:33
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-10 19:42:18
+ * @LastEditTime: 2022-07-24 00:02:10
  * @Description: 实现基础功能的类
  * @FilePath: \salt-wiki-editor\src\class\SaltOriginalClass.ts
  */
@@ -99,7 +99,7 @@ export default class SaltOriginalClass {
       timeInterval = 200,
       sync = false,
     } = props
-    let pagelist = pages.split('; ')
+    const pagelist = typeof pages === 'string' ? pages.split('; ') : pages
     if (pagelist.length < 1) return
     log(`批量编辑 ${pagelist.length} 个页面`)
     for (let i = 0; i < pagelist.length; i++) {

@@ -2,7 +2,7 @@
  * @Author: Salt
  * @Date: 2022-07-09 15:13:33
  * @LastEditors: Salt
- * @LastEditTime: 2022-07-10 14:47:22
+ * @LastEditTime: 2022-07-24 00:05:39
  * @Description: 有实用方法的类
  * @FilePath: \salt-wiki-editor\src\class\SaltWikiEditHelper.ts
  */
@@ -50,31 +50,59 @@ export default class SaltWikiEditHelper extends SaltOriginalClass {
     })
   }
 
-  wikiReplace(pages = '', before: any = /$/, after = '', timeInterval = 500) {
+  wikiReplace(
+    pages: string | string[] = '',
+    before: any = /$/,
+    after = '',
+    timeInterval = 500,
+    sync = false
+  ) {
+    if (typeof pages !== 'string' && !Array.isArray(pages)) {
+      throw new Error('参数pages必须是以“; ”分割的字符串，或一个字符串数组')
+    }
     this.wikiEdit({
       pages,
       before,
       after,
       timeInterval,
       sum: `批量替换：替换 “${before}” 为 “${after}”`,
+      sync,
     })
   }
-  wikiAppend(pages = '', content = '', timeInterval = 500) {
+  wikiAppend(
+    pages: string | string[] = '',
+    content = '',
+    timeInterval = 500,
+    sync = false
+  ) {
+    if (typeof pages !== 'string' && !Array.isArray(pages)) {
+      throw new Error('参数pages必须是以“; ”分割的字符串，或一个字符串数组')
+    }
     this.wikiEdit({
       pages,
       before: /$/,
       after: content,
       timeInterval,
       sum: `批量添加：添加 “${content}” 到页尾`,
+      sync,
     })
   }
-  wikiPrepend(pages = '', content = '', timeInterval = 500) {
+  wikiPrepend(
+    pages: string | string[] = '',
+    content = '',
+    timeInterval = 500,
+    sync = false
+  ) {
+    if (typeof pages !== 'string' && !Array.isArray(pages)) {
+      throw new Error('参数pages必须是以“; ”分割的字符串，或一个字符串数组')
+    }
     this.wikiEdit({
       pages,
       before: /^/,
       after: content,
       timeInterval,
       sum: `批量添加：添加 “${content}” 到页首`,
+      sync,
     })
   }
 
